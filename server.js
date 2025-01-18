@@ -6,8 +6,20 @@ const mongoose = require('mongoose');
 const twilio = require('twilio');
 const { OpenAI } = require('openai');
 const cors = require('cors');
+// At the top of your server.js
 require('dotenv').config();
 
+// Update the BASE_URL logic
+const BASE_URL = process.env.NODE_ENV === 'production' 
+  ? process.env.BASE_URL 
+  : `http://localhost:${process.env.PORT || 5000}`;
+
+// Update your CORS configuration
+app.use(cors({
+  origin: process.env.NODE_ENV === 'production' 
+    ? process.env.FRONTEND_URL 
+    : 'http://localhost:3000'
+}));
 const app = express();
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
